@@ -1,0 +1,320 @@
+// Variables
+//$green: #799700; OLD GREEN
+$green: #678522;
+$default-width: 800px;
+
+@import "bootstrap/variables";
+@import "bootstrap/mixins";
+
+@import "bootstrap/normalize";
+@import "bootstrap/glyphicons";
+
+$btn-success-bg: $green;
+$btn-success-border: darken($btn-success-bg, 5%);
+
+@import "bootstrap/type";
+@import "bootstrap/buttons";
+
+@import "bootstrap/navs";
+
+@import "bootstrap/alerts";
+@import "bootstrap/utilities";
+@import "bootstrap/list-group";
+
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px;
+  line-height: 1.4em;
+  margin: 0;
+  background: url("../images/nature-transparent.png") no-repeat #b5e7f9;
+  background-attachment: fixed;
+  background-position: bottom center;
+  background-size: 100%;
+  transform: translateZ(0);
+}
+
+h1 {
+  font-weight: 100;
+
+  @media (max-width: 600px) {
+    font-size: 26px;
+  }
+}
+
+h2 {
+  font-size: 24px;
+  color: #8a8a8a;
+  font-weight: 100;
+}
+
+a {
+  color: darken(#b5e7f9, 50);
+  text-decoration: none;
+}
+
+.page {
+  max-width: $default-width;
+  margin: 0 auto;
+}
+
+header {
+  background-color: #fff;
+  padding: 0;
+  margin-bottom: 1em;
+}
+
+.header {
+  &-content {
+    max-width: $default-width;
+    margin: 0 auto;
+  }
+
+  &-title {
+    padding: 0.5em 0;
+    display: inline-block;
+
+    @media (max-width: 600px) {
+      padding: 0.5em 0 0.5em 0.25em;
+    }
+  }
+}
+
+.week-number {
+  color: $green;
+}
+
+.house {
+  &-link {
+    float: right;
+    padding: 1.5em 1em;
+
+    @media (max-width: 600px) {
+      max-width: 30px;
+      padding: 1em;
+    }
+  }
+
+  &-icon {
+    fill: lighten($green, 6);
+    transition: all .2s linear;
+    overflow: visible;
+    max-width: 100%;
+
+    .door {
+      transition: all .2s linear;
+      transform-origin: 0 0 0;
+    }
+
+    &:hover {
+      fill: $green;
+
+      .door {
+        opacity: 0;
+        transform: rotateY(10deg);
+      }
+    }
+  }
+}
+
+.display-inline {
+  display: inline !important;
+}
+
+// Content
+
+.list-group {
+  margin: 0;
+}
+
+.prayer-list {
+  margin-bottom: 20px;
+}
+
+// Icons
+.action {
+  &-icon {
+    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    padding: 0 0.75em;
+    vertical-align: middle;
+    display: none;
+  }
+
+  &-answer {
+    width: 23px;
+  }
+
+  &-delete {
+    svg {
+      fill: red !important;;
+    }
+  }
+
+  &-edit {
+    height: 20px;
+    width: 20px;
+  }
+}
+
+.item {
+  &-edit {
+    display: none;
+    border: none;
+    width: 60%;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
+
+.edit-mode {
+  box-shadow: 0 0 9px #777;
+  z-index: 10;
+
+  .item {
+    &-title {
+      display: none;
+    }
+
+    &-edit {
+      display: inline;
+    }
+  }
+}
+
+.list-group-item:hover {
+  .action-icon {
+    display: inline-block;
+  }
+}
+
+.empty {
+  &-list {
+    padding: 1em;
+    background-color: #fff;
+    display: block;
+  }
+}
+
+.add-request {
+  &-container {
+    float: right;
+  }
+
+  &-input {
+    display: inline-block;
+    width: 220px;
+    padding: 6px;
+    font-size: 14px;
+    border-radius: $border-radius-base 0 0 $border-radius-base;
+    border: 1px solid $btn-default-border;
+    border-width-right: 0;
+    animation: fadeIn 0.3s linear;
+    outline: none;
+  }
+
+  &-button {
+    &.opened {
+      border-radius: 0 $border-radius-base $border-radius-base 0;
+      border-left-width: 0;
+    }
+  }
+}
+
+// Superfluous:
+.bear {
+  position: absolute;
+  margin-top: -1.5em;
+
+  img {
+    position: relative;
+    perspective: 200px;
+    perspective-origin: 0 0;
+    transform: rotateX( 0deg );
+    animation: swing infinite 6s linear;
+  }
+
+
+}
+
+@keyframes swing {
+  0% {
+    transform: rotateX(0deg);
+  }
+  25% {
+    transform: rotateX(-45deg);
+  }
+  50% {
+    transform: rotateX(0deg);
+  }
+  75% {
+    transform: rotateX(45deg);
+  }
+  100% {
+    transform: rotateX(0deg);
+  }
+
+}
+
+.cloud {
+  position: fixed;
+  left: 92%;
+  top: 18%;
+  z-index: -1;
+  transform: translateX(0);
+  opacity: 0.5;
+
+
+  animation: cycle infinite 160s linear;
+
+  &-image {
+
+  }
+}
+
+@keyframes cycle {
+  0% {
+    transform: translateX(0);
+    opacity: 0;
+  }
+
+  3% {
+    opacity: 0.2;
+  }
+
+  12% {
+    opacity: 0.5;
+  }
+
+  94% {
+    opacity: 0.5;
+  }
+
+  100% {
+    transform: translateX(-1500px);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    width: 0;
+  }
+
+  100% {
+    width: 220px;
+    opacity: 1;
+  }
+}
+
+// Bootstrap overrides {
+.alert {
+  transition: all .2s linear;
+}
+
+.nav-tabs > li > a {
+  background-color: rgba(#fff, 0.5);
+}

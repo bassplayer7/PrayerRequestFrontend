@@ -1,0 +1,11 @@
+<li class="list-group-item">
+    <span class="item-title">{{Title}}</span>
+    <label for="edit_{{Id}}" class="hidden">Edit Title</label>
+    <input type="text" id="edit_{{Id}}" class="action-edit-input item-edit"/>
+    <span class="pull-right text-muted">{{Date}}</span>
+    <img src="../global/assets/images/remove.svg" class="pull-right action-icon action-delete" />
+    {{#unless Answered}}
+        <img src="../global/assets/images/checkmark.svg" class="pull-right action-icon action-answer" />
+    {{/unless}}
+    <img src="../global/assets/images/edit.svg" class="pull-right action-icon action-edit" />
+</li>

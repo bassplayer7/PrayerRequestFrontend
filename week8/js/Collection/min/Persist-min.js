@@ -1,0 +1,1 @@
+define(["jquery","PubSub","evt"],function($,e,t){var u=function(){this.saveRequest=function(u){e.publish(t.REQUEST_NEW_ADD,u)},this.deleteRequest=function(e,t){},e.subscribe(t.REQUEST_NEW_INIT,this.saveRequest.bind(this))};return u});

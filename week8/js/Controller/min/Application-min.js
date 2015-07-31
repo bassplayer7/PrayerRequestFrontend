@@ -1,0 +1,1 @@
+define(["jquery","../Collection/Request","../views/Application","PubSub","evt"],function($,i,t,e,n){var s=function(e,n){this.requestCollection=new i,this.view=new t(e,n,this.requestCollection),this.showList=function(){this.view.buildInitialList()}};return s});
