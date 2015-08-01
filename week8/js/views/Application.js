@@ -44,8 +44,15 @@ define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./t
             var requestView = new RequestView(request),
                 $newRequest = requestView.getElement();
 
+            if (eventName === evt.REQUEST_NEW_ADD) {
+                $newRequest.addClass("new");
+
+                setTimeout(function() {
+                    $newRequest.removeClass("new");
+                }, 1500);
+            }
+
             this.getListElement(request.Answered).append($newRequest);
-            PubSub.publish(evt.REQUEST_NEW_COMPLETE, $newRequest);
         };
         
         this.addEmptyListMessage = function() {
@@ -137,13 +144,14 @@ define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./t
 
         this.setup = function() {
             PubSub.subscribe(evt.REQUEST_ADD, this.addRequestToList.bind(this));
+            PubSub.subscribe(evt.REQUEST_NEW_ADD, this.addRequestToList.bind(this));
             PubSub.subscribe(evt.REQUEST_UPDATE_INIT, this.initRequestUpdate.bind(this));
             PubSub.subscribe(evt.REQUEST_UPDATE_COMPLETE, this.completeRequestUpdate.bind(this));
             PubSub.subscribe(evt.REQUEST_DELETE_CLEANUP, this.addEmptyListMessage);
             PubSub.subscribe(evt.REQUEST_DELETE_COMPLETE, this.removeRequestFromList.bind(this));
             PubSub.subscribe(evt.REQUEST_ANSWERED_COMPLETE, this.markAsAnswered.bind(this));
             PubSub.subscribe(evt.LIST_ACTION_COMPLETE, this.addEmptyListMessage);
-            PubSub.subscribe(evt.REQUEST_NEW_COMPLETE, this.clearEmptyListMessages.bind(this));
+            PubSub.subscribe(evt.REQUEST_NEW_ADD, this.clearEmptyListMessages.bind(this));
         };
 
         this.setup();

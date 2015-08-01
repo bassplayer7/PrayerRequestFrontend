@@ -19,16 +19,55 @@
 
 define(['jquery', 'HandleBars', 'PubSub', 'evt', 'text!./template/add.html', "BootstrapTab"],
     function($, HandleBars, PubSub, evt, AddTemplate) {
-    var AddView = function() {
-        var base = this;
-        this.buttonText = undefined;
-        this.button = undefined;
+        var AddView = function() {
+            var base = this;
 
-        this.getElement = function() {
+            this.setup = function() {
+                this.registerOpenInputClick();
+                PubSub.subscribe(evt.REQUEST_NEW_COMPLETE, this.completeAddRequest.bind(this));
+                PubSub.subscribe(evt.REQUEST_NEW_ERROR, this.displayError.bind(this));
+
+                // TODO: Move this to Application Controller or Application
+                $(document).keydown(function(e) {
+                    if (!$(":focus").is("input")) {
+                        if (e.which === 67) { // c for compose
+                            e.preventDefault();
+                            base.showInput.apply(base);
+                        } else if (e.which === 85) { // u for unanswered
+                            e.preventDefault();
+                            $('.nav-tabs a[href="#unanswered"]').tab('show');
+                        } else if (e.which === 65) {// a for answered
+                            e.preventDefault();
+                            $('.nav-tabs a[href="#answered"]').tab('show');
+                        }
+                    }
+                });
+            };
+
+            this.setup();
+        };
+
+        AddView.prototype.buttonText = undefined;
+        AddView.prototype.button = undefined;
+        AddView.prototype.container = $('.add-request-container');
+
+        AddView.prototype.getContainer = function() {
+            return this.container;
+        };
+
+        AddView.prototype.getInput = function() {
             return $('#add_request_input');
         };
 
-        this.getButton = function() {
+        AddView.prototype.getTitle = function() {
+            return $('#add_request_title');
+        };
+
+        AddView.prototype.getDate = function() {
+            return $('#add_request_date');
+        };
+
+        AddView.prototype.getButton = function() {
             if (this.button !== undefined) {
                 return this.button;
             } else {
@@ -36,93 +75,125 @@ define(['jquery', 'HandleBars', 'PubSub', 'evt', 'text!./template/add.html', "Bo
             }
         };
 
-        this.registerOpenInputClick = function() {
+        AddView.prototype.registerOpenInputClick = function() {
+            var base = this;
             this.getButton().off('click').click(base.showInput.bind(base));
         };
 
-        this.registerSubmitRequestClick = function() {
+        AddView.prototype.registerSubmitRequestClick = function() {
+            var base = this;
             this.getButton().off('click').click(base.submitRequest.bind(base));
         };
 
-        this.hideInput = function() {
-            this.getElement().remove();
+        AddView.prototype.hideInput = function() {
+            this.getInput().remove();
+            this.getErrorElement().addClass("hidden");
 
             if (this.buttonText !== undefined) {
-                this.getButton().text(this.buttonText).removeClass('opened');
+                this.getButton()
+                    .text(this.buttonText)
+                    .removeClass('opened')
+                    .removeClass('sending')
+                    .prop("disabled", false);
+
                 this.registerOpenInputClick();
             }
         };
 
-        this.addRequest = function($title, $date, $answered) {
+        AddView.prototype.addRequest = function($title, $date) {
             if (typeof $title !== "string") {
                 return false;
             }
 
             PubSub.publish(evt.REQUEST_NEW_INIT, {
                 Title: $title,
-                Date: $date,
-                Answered: $answered
+                Date: $date
             });
         };
 
-        this.submitRequest = function() {
-            var $inputValue = this.getElement().val();
+        AddView.prototype.submitRequest = function() {
+            var $titleValue = this.getTitle().val();
 
-            if ($inputValue) {
-                this.addRequest($inputValue);
-                this.hideInput();
+            if ($titleValue) {
+                this.getButton().text('Sending...').prop("disabled", true);
+                this.getInput().addClass('sending');
+                this.addRequest($titleValue, this.getDate().val());
             }
         };
 
-        this.keyActions = function($el) {
+        AddView.prototype.keyActions = function($el) {
+            var base = this;
+            $el.off('keydown');
+
             $el.keydown(function(e) {
-                if (e.which === 13) {
+                if (e.which === 13) { // enter
                     base.submitRequest.call(base);
                 }
 
-                if (e.which === 27) {
+                if (e.which === 27) { // esc
                     base.hideInput();
                 }
             });
         };
 
-        this.showInput = function() {
-            var template = HandleBars.compile($(AddTemplate).html()),
-                button = this.getButton();
+        AddView.prototype.showInput = function() {
+            if (this.getInput().length >= 1) {
+                return false;
+            }
 
-            this.buttonText = this.getButton().text();
-            this.button = button;
+            var template = HandleBars.compile(AddTemplate),
+                $button = this.getButton();
 
-            button.before(template);
+            this.buttonText = $button.text();
+            this.button = $button;
 
-            button.text('Save').addClass('opened');
+            $button.before(template);
+
+            $button.text('Save').addClass('opened');
             this.registerSubmitRequestClick();
-            this.keyActions(button.parent());
+            this.keyActions($button.parent());
 
-            this.getElement().focus();
+            this.getTitle().focus();
         };
 
-        this.setup = function() {
-            this.registerOpenInputClick();
-
-            $(document).keydown(function(e) {
-                if (!$(":focus").is("input")) {
-                    if (e.which === 67) { // c for compose
-                        e.preventDefault();
-                        base.showInput.apply(base);
-                    } else if (e.which === 85) { // u for unanswered
-                        e.preventDefault();
-                        $('.nav-tabs a[href="#unanswered"]').tab('show');
-                    } else if (e.which === 65) {// a for answered
-                        e.preventDefault();
-                        $('.nav-tabs a[href="#answered"]').tab('show');
-                    }
-                }
-            });
+        AddView.prototype.completeAddRequest = function() {
+            this.hideInput();
+            this.getErrorElement().addClass("hidden");
         };
 
-        this.setup();
-    };
+        AddView.prototype.enableAddRequest = function() {
+            this.getButton().text("Try Again").prop("disabled", false);
+            this.getInput().removeClass("sending");
+        };
+
+        AddView.prototype.getErrorElement = function() {
+            if (this.errorEl === undefined) {
+                var $errorEl = $("<div></div>");
+                $errorEl.addClass("add-request-error");
+                this.getContainer().append($errorEl);
+                this.errorEl = $errorEl;
+            }
+
+            this.errorEl.text('').removeClass("hidden");
+
+            return this.errorEl;
+        };
+
+        AddView.prototype.displayError = function(eventName, response) {
+            this.enableAddRequest();
+
+            if (response.status === 400) {
+                this.getErrorElement().text("There was a problem with the request. Please try something else.");
+            }
+
+            if (response.status === 403) {
+                this.getErrorElement().text("It doesn't look like your user has been saved correctly.");
+            }
+
+            if (response.status === 409) {
+                this.getErrorElement().text("You already have a request with the same title.");
+            }
+        };
 
     return AddView;
 });

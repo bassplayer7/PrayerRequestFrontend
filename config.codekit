@@ -2601,6 +2601,17 @@
 		"outputStyle": 1,
 		"syntaxCheckerStyle": 1
 		},
+	"\/week8\/js\/util\/svg4everybody.min.js": {
+		"fileType": 64,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/week8\/js\/util\/svg4everybody.min.js",
+		"outputAbbreviatedPath": "\/week8\/js\/util\/min\/svg4everybody.min-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
 	"\/week8\/js\/views\/Add.js": {
 		"fileType": 64,
 		"ignore": 0,

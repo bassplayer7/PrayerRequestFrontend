@@ -21,6 +21,10 @@ $btn-success-border: darken($btn-success-bg, 5%);
 @import "bootstrap/utilities";
 @import "bootstrap/list-group";
 
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
@@ -124,6 +128,15 @@ header {
 
 .list-group {
   margin: 0;
+
+  &-item {
+    transition: background-color .5s linear,
+                box-shadow .2s linear;
+
+    &.new {
+      background-color: $alert-success-bg;
+    }
+  }
 }
 
 .prayer-list {
@@ -131,29 +144,58 @@ header {
 }
 
 // Icons
+$fill: #ddd;
 .action {
   &-icon {
+    box-sizing: content-box;
     cursor: pointer;
     width: 18px;
     height: 18px;
     padding: 0 0.75em;
     vertical-align: middle;
     display: none;
+    fill: $fill;
   }
 
   &-answer {
     width: 23px;
+
+    &:hover {
+      fill: $green;
+    }
   }
 
   &-delete {
-    svg {
-      fill: red !important;;
+
+    &:hover {
+      fill: $alert-danger-text;
     }
   }
 
   &-edit {
     height: 20px;
     width: 20px;
+
+    .st0 {
+      opacity: 0.75;
+      fill: #eee;
+    }
+
+    &:hover {
+      fill: darken(#fbed50, 17);
+
+      .st0 {
+        fill: darken($fill, 23);
+      }
+
+      .st2 {
+        fill: lighten(desaturate(#a97042, 10), 20);
+      }
+
+      .st3 {
+        fill: darken($fill, 15);
+      }
+    }
   }
 }
 
@@ -198,21 +240,43 @@ header {
   }
 }
 
+/* =============== Add Request ================ */
 .add-request {
   &-container {
     float: right;
   }
 
   &-input {
+    animation: fadeIn 0.3s linear;
+
     display: inline-block;
-    width: 220px;
-    padding: 6px;
+    width: 300px;
     font-size: 14px;
     border-radius: $border-radius-base 0 0 $border-radius-base;
     border: 1px solid $btn-default-border;
     border-width-right: 0;
-    animation: fadeIn 0.3s linear;
+    background-color: #fff;
+    transition: opacity .2s linear;
+
+    &.sending {
+      opacity: 0.85;
+    }
+  }
+
+  &-title,
+  &-date {
+    width: 66%;
+    padding: 7px;
+    border: none;
     outline: none;
+    display: inline-block;
+    background-color: transparent;
+  }
+
+  &-date {
+    float: right;
+    width: 33%;
+    border-left: 1px solid $btn-default-border;
   }
 
   &-button {
@@ -221,7 +285,19 @@ header {
       border-left-width: 0;
     }
   }
+
+  &-error {
+    clear: both;
+    padding: 6px;
+    background: $alert-danger-bg;
+    color: $alert-danger-text;
+    border: 1px solid $alert-danger-border;
+    margin-top: 4px;
+    border-radius: $border-radius-base;
+  }
 }
+
+/* =============== END: Add Request ================ */
 
 // Superfluous:
 .bear {
@@ -267,7 +343,7 @@ header {
   opacity: 0.5;
 
 
-  animation: cycle infinite 160s linear;
+  //animation: cycle infinite 160s linear;
 
   &-image {
 

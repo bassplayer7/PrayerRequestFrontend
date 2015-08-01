@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" xml:space="preserve">
+    <symbol id="edit" viewBox="0 0 18 18">
+        <polygon class="st2" points="1.6 13.3 4.7 16.4 0 18"/>
+        <rect x="12.9" y="1" transform="matrix(0.7071 0.7071 -0.7071 0.7071 6.4877 -9.7931)" class="st1" width="4.4" height="3.9"/>
+        <rect x="5.8" y="3.1" transform="matrix(-0.7071 -0.7071 0.7071 -0.7071 6.6389 22.7065)" class="st1" width="4.4" height="13.8"/>
+        <rect x="12.8" y="2.5" transform="matrix(0.7071 -0.7071 0.7071 0.7071 0.5764 10.7829)" class="st3" width="1.1" height="4.4"/>
+    </symbol>
+    <symbol id="remove" viewBox="0 0 18 18">
+        <polygon id="XMLID_2_" points="18 3 15 0 9 6 3 0 0 3 6 9 0 15 3 18 9 12 15 18 18 15 12 9 "/>
+    </symbol>
+    <symbol id="checkmark" viewBox="0 0 23 18">
+        <polygon id="checkmark" points="20 0 8 12 3 7 0 10 5 15 5 15 8 18 23 3 "/>
+    </symbol>
+</svg>

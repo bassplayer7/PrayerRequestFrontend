@@ -25,7 +25,7 @@ define([
     function($, PubSub, evt, RequestModel) {
 
         var collection = [],
-            //baseUrl = "http://api.js101.net/jessemaxwell1/request/"
+            //baseUrl = "http://api.js101.net/jessemaxwell1/request/";
             baseUrl = "http://prayer.dev/bassplayer7/request/";
 
         var loadRequests = function(onComplete) {
@@ -55,13 +55,18 @@ define([
             }
         };
 
-        var requestAdd = function(request) {
+        var requestAdd = function(request, type) {
             if (typeof request !== RequestModel) {
                 request = new RequestModel(request);
             }
 
             collection.push(request);
-            PubSub.publish(evt.REQUEST_ADD, request);
+
+            if (type === "new") {
+                PubSub.publish(evt.REQUEST_NEW_ADD, request);
+            } else {
+                PubSub.publish(evt.REQUEST_ADD, request);
+            }
 
             return request;
         };
@@ -77,10 +82,26 @@ define([
             PubSub.subscribe(evt.REQUEST_UPDATE_SAVE, this.requestUpdate.bind(this));
         };
 
-        RequestCollection.prototype.requestNewComplete = function(data, model) {
-            PubSub.publish(evt.REQUEST_ADD, model);
-            model.Id = data.id;
-            collection.push(model);
+        RequestCollection.prototype.requestNew = function(eventName, request) {
+            if (typeof eventName === "object") {
+                request = eventName;
+            }
+
+            var model = new RequestModel(request);
+
+            $.ajax({
+                    url: baseUrl + "new",
+                    dataType: 'json',
+                    method: "PUT",
+                    data: { "prayer_request": model }
+                }).done(function(data) {
+                    model.Id = data.id;
+                    PubSub.publish(evt.REQUEST_NEW_COMPLETE, data);
+                    requestAdd(model, "new");
+                }).fail(function(data) {
+                    PubSub.publish(evt.REQUEST_NEW_ERROR, data);
+                }
+            );
         };
 
         RequestCollection.prototype.requestDelete = function(event, request) {
@@ -142,28 +163,6 @@ define([
             }).fail(function(data, status) {
                     console.log(status);
                     PubSub.publish(evt.ERROR, {data: data, model: request});
-                }
-            );
-        };
-
-        RequestCollection.prototype.requestNew = function(eventName, request) {
-            if (typeof eventName === "object") {
-                request = eventName;
-            }
-
-            var model = new RequestModel(request);
-
-            $.ajax({
-                url: baseUrl + "new",
-                dataType: 'json',
-                method: "PUT",
-                data: { "prayer_request": model }
-            }).done(function(data, status) {
-                console.log(status);
-                model.Id = data.id;
-                requestAdd(model);
-            }).fail(function(data) {
-                    PubSub.publish(evt.ERROR, data);
                 }
             );
         };

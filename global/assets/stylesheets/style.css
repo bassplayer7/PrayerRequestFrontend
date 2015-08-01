@@ -2710,6 +2710,10 @@ button.list-group-item-danger {
   line-height: 1.3; }
 
 /* line 24, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+* {
+  box-sizing: border-box; }
+
+/* line 28, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 body {
   font-family: "Open Sans", sans-serif;
   font-size: 14px;
@@ -2722,178 +2726,238 @@ body {
   -webkit-transform: translateZ(0);
           transform: translateZ(0); }
 
-/* line 36, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 40, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 h1 {
   font-weight: 100; }
   @media (max-width: 600px) {
-    /* line 36, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    /* line 40, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
     h1 {
       font-size: 26px; } }
 
-/* line 44, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 48, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 h2 {
   font-size: 24px;
   color: #8a8a8a;
   font-weight: 100; }
 
-/* line 50, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 54, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 a {
   color: #0d7ba2;
   text-decoration: none; }
 
-/* line 55, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 59, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .page {
   max-width: 800px;
   margin: 0 auto; }
 
-/* line 60, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 64, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 header {
   background-color: #fff;
   padding: 0;
   margin-bottom: 1em; }
 
-/* line 67, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 71, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .header-content {
   max-width: 800px;
   margin: 0 auto; }
 
-/* line 72, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 76, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .header-title {
   padding: 0.5em 0;
   display: inline-block; }
   @media (max-width: 600px) {
-    /* line 72, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    /* line 76, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
     .header-title {
       padding: 0.5em 0 0.5em 0.25em; } }
 
-/* line 82, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 86, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .week-number {
   color: #678522; }
 
-/* line 87, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 91, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .house-link {
   float: right;
   padding: 1.5em 1em; }
   @media (max-width: 600px) {
-    /* line 87, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    /* line 91, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
     .house-link {
       max-width: 30px;
       padding: 1em; } }
 
-/* line 97, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 101, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .house-icon {
   fill: #7a9d28;
   -webkit-transition: all 0.2s linear;
           transition: all 0.2s linear;
   overflow: visible;
   max-width: 100%; }
-  /* line 103, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 107, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .house-icon .door {
     -webkit-transition: all 0.2s linear;
             transition: all 0.2s linear;
     -webkit-transform-origin: 0 0 0;
         -ms-transform-origin: 0 0 0;
             transform-origin: 0 0 0; }
-  /* line 108, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 112, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .house-icon:hover {
     fill: #678522; }
-    /* line 111, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    /* line 115, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
     .house-icon:hover .door {
       opacity: 0;
       -webkit-transform: rotateY(10deg);
               transform: rotateY(10deg); }
 
-/* line 119, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 123, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .display-inline {
   display: inline !important; }
 
-/* line 125, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 129, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .list-group {
   margin: 0; }
+  /* line 132, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  .list-group-item {
+    -webkit-transition: background-color 0.5s linear, box-shadow 0.2s linear;
+            transition: background-color 0.5s linear, box-shadow 0.2s linear; }
+    /* line 136, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    .list-group-item.new {
+      background-color: #dff0d8; }
 
-/* line 129, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 142, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .prayer-list {
   margin-bottom: 20px; }
 
-/* line 135, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 149, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .action-icon {
+  box-sizing: content-box;
   cursor: pointer;
   width: 18px;
   height: 18px;
   padding: 0 0.75em;
   vertical-align: middle;
-  display: none; }
+  display: none;
+  fill: #ddd; }
 
-/* line 144, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 160, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .action-answer {
   width: 23px; }
+  /* line 163, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  .action-answer:hover {
+    fill: #678522; }
 
-/* line 149, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
-.action-delete svg {
-  fill: red !important; }
+/* line 170, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+.action-delete:hover {
+  fill: #a94442; }
 
-/* line 154, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 175, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .action-edit {
   height: 20px;
   width: 20px; }
+  /* line 179, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  .action-edit .st0 {
+    opacity: 0.75;
+    fill: #eee; }
+  /* line 184, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  .action-edit:hover {
+    fill: #efdc05; }
+    /* line 187, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    .action-edit:hover .st0 {
+      fill: #a2a2a2; }
+    /* line 191, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    .action-edit:hover .st2 {
+      fill: #c6a58b; }
+    /* line 195, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+    .action-edit:hover .st3 {
+      fill: #b7b7b7; }
 
-/* line 161, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 203, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .item-edit {
   display: none;
   border: none;
   width: 60%; }
-  /* line 166, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 208, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .item-edit:focus {
     outline: none; }
 
-/* line 172, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 214, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .edit-mode {
   box-shadow: 0 0 9px #777;
   z-index: 10; }
-  /* line 177, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 219, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .edit-mode .item-title {
     display: none; }
-  /* line 181, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 223, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .edit-mode .item-edit {
     display: inline; }
 
-/* line 188, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 230, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .list-group-item:hover .action-icon {
   display: inline-block; }
 
-/* line 194, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 236, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .empty-list {
   padding: 1em;
   background-color: #fff;
   display: block; }
 
-/* line 202, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* =============== Add Request ================ */
+/* line 245, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .add-request-container {
   float: right; }
 
-/* line 206, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 249, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .add-request-input {
+  -webkit-animation: fadeIn 0.3s linear;
+          animation: fadeIn 0.3s linear;
   display: inline-block;
-  width: 220px;
-  padding: 6px;
+  width: 300px;
   font-size: 14px;
   border-radius: 4px 0 0 4px;
   border: 1px solid #ccc;
   border-width-right: 0;
-  -webkit-animation: fadeIn 0.3s linear;
-          animation: fadeIn 0.3s linear;
-  outline: none; }
+  background-color: #fff;
+  -webkit-transition: opacity 0.2s linear;
+          transition: opacity 0.2s linear; }
+  /* line 261, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  .add-request-input.sending {
+    opacity: 0.85; }
 
-/* line 219, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 267, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+.add-request-title,
+.add-request-date {
+  width: 66%;
+  padding: 7px;
+  border: none;
+  outline: none;
+  display: inline-block;
+  background-color: transparent; }
+
+/* line 276, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+.add-request-date {
+  float: right;
+  width: 33%;
+  border-left: 1px solid #ccc; }
+
+/* line 283, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .add-request-button.opened {
   border-radius: 0 4px 4px 0;
   border-left-width: 0; }
 
-/* line 227, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 289, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+.add-request-error {
+  clear: both;
+  padding: 6px;
+  background: #f2dede;
+  color: #a94442;
+  border: 1px solid #ebccd1;
+  margin-top: 4px;
+  border-radius: 4px; }
+
+/* =============== END: Add Request ================ */
+/* line 303, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .bear {
   position: absolute;
   margin-top: -1.5em; }
-  /* line 231, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+  /* line 307, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
   .bear img {
     position: relative;
     -webkit-perspective: 200px;
@@ -2939,7 +3003,7 @@ header {
     -webkit-transform: rotateX(0deg);
             transform: rotateX(0deg); } }
 
-/* line 261, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 337, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .cloud {
   position: fixed;
   left: 92%;
@@ -2948,9 +3012,7 @@ header {
   -webkit-transform: translateX(0);
       -ms-transform: translateX(0);
           transform: translateX(0);
-  opacity: 0.5;
-  -webkit-animation: cycle infinite 160s linear;
-          animation: cycle infinite 160s linear; }
+  opacity: 0.5; }
 
 @-webkit-keyframes cycle {
   0% {
@@ -3000,11 +3062,11 @@ header {
     width: 220px;
     opacity: 1; } }
 
-/* line 314, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 390, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .alert {
   -webkit-transition: all 0.2s linear;
           transition: all 0.2s linear; }
 
-/* line 318, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
+/* line 394, /Users/jessemaxwell/Sites/ITonRamp Javascript/global/assets/stylesheets/style.scss */
 .nav-tabs > li > a {
   background-color: rgba(255, 255, 255, 0.5); }

@@ -3,9 +3,9 @@
     <label for="edit_{{Id}}" class="hidden">Edit Title</label>
     <input type="text" id="edit_{{Id}}" class="action-edit-input item-edit"/>
     <span class="pull-right text-muted">{{Date}}</span>
-    <img src="../global/assets/images/remove.svg" class="pull-right action-icon action-delete" />
+    <svg class="pull-right action-icon action-delete"><use xlink:href="../global/assets/images/spritemap.svg#remove"></use></svg>
     {{#unless Answered}}
-        <img src="../global/assets/images/checkmark.svg" class="pull-right action-icon action-answer" />
+        <svg class="pull-right action-icon action-answer"><use xlink:href="../global/assets/images/spritemap.svg#checkmark"></use></svg>
     {{/unless}}
-    <img src="../global/assets/images/edit.svg" class="pull-right action-icon action-edit" />
+    <svg class="pull-right action-icon action-edit"><use xlink:href="../global/assets/images/spritemap.svg#edit"></use></svg>
 </li>

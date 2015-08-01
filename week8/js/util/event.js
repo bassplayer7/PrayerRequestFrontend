@@ -23,8 +23,12 @@ define({
     // Request has been saved/processed and is ready to be added to list:
     REQUEST_NEW_ADD: "request.new.add",
 
+    //REQUEST_NEW_SAVE: "request.new.save",
+
     // Request has been added to list and all actions related to its creation have been finalized:
-    REQUEST_NEW_COMPLETE: "request.add.complete",
+    REQUEST_NEW_COMPLETE: "request.new.complete",
+
+    REQUEST_NEW_ERROR: "request.new.error",
 
     // Delete request action has been initialized:
     REQUEST_DELETE_INIT: "request.delete.start",
@@ -45,7 +49,7 @@ define({
     REQUEST_UPDATE_COMPLETE: "request.update.complete",
 
     // Add request to list:
-    REQUEST_ADD: this.REQUEST_NEW_ADD,
+    REQUEST_ADD: "request.add",
 
     LIST_ACTION_COMPLETE: "list.action.complete",
 
