@@ -25,8 +25,8 @@ define([
     function($, PubSub, evt, RequestModel) {
 
         var collection = [],
-            //baseUrl = "http://api.js101.net/jessemaxwell1/request/";
-            baseUrl = "http://prayer.dev/bassplayer7/request/";
+            baseUrl = "http://api.js101.net/jessemaxwell1/request/";
+            //baseUrl = "http://prayer.dev/bassplayer7/request/";
 
         var loadRequests = function(onComplete) {
             $.ajax(baseUrl + "all", {
