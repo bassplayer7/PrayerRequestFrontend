@@ -37,11 +37,13 @@ define(function() {
 
         if (!this.Date) {
             var date = new Date(),
-                month = date.getMonth() + 1 + "";
+                month = date.getMonth() + 1 + "",
+                day = date.getDate() + "";
             month = month.length === 1 ? '0' + month : month;
+            day = day.length === 1 ? '0' + day : day;
 
             this.Date = month +
-                "-" + date.getDate() +
+                "-" + day +
                 "-" + date.getFullYear();
         }
 

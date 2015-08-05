@@ -17,6 +17,8 @@
  * @copyright Swift Otter Studios, 7/18/15
  */
 define({
+    INITIALIZE_SYSTEM: "initialize.system",
+
     // Request has been created by user:
     REQUEST_NEW_INIT: "request.new.init",
 
@@ -45,6 +47,8 @@ define({
     REQUEST_ANSWERED_COMPLETE: "request.answered.complete",
 
     REQUEST_UPDATE_INIT: "request.update.init",
+    REQUEST_UPDATE_CANCEL: "request.update.cancel",
+    REQUEST_UPDATE_PREPARE_COMPLETE: "request.update.prepare.complete",
     REQUEST_UPDATE_SAVE: "request.update.save",
     REQUEST_UPDATE_COMPLETE: "request.update.complete",
 
@@ -54,5 +58,6 @@ define({
     LIST_ACTION_COMPLETE: "list.action.complete",
 
     ERROR: "error",
+    ERROR_UPDATE: "error.update",
     ERROR_UNKNOWN: "error.unknown"
 });

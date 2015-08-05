@@ -17,8 +17,8 @@
  * @copyright Swift Otter Studios, 7/20/15
  */
 
-define(['jquery', 'HandleBars', 'PubSub', 'evt', 'text!./template/add.html', "BootstrapTab"],
-    function($, HandleBars, PubSub, evt, AddTemplate) {
+define(['jquery', 'HandleBars', 'PubSub', 'evt', 'errorMsg', 'text!./template/add.html', "BootstrapTab"],
+    function($, HandleBars, PubSub, evt, errorMsg, AddTemplate) {
         var AddView = function() {
             var base = this;
 
@@ -181,18 +181,19 @@ define(['jquery', 'HandleBars', 'PubSub', 'evt', 'text!./template/add.html', "Bo
 
         AddView.prototype.displayError = function(eventName, response) {
             this.enableAddRequest();
+            this.getErrorElement().text(errorMsg[response.status]);
 
-            if (response.status === 400) {
-                this.getErrorElement().text("There was a problem with the request. Please try something else.");
-            }
-
-            if (response.status === 403) {
-                this.getErrorElement().text("It doesn't look like your user has been saved correctly.");
-            }
-
-            if (response.status === 409) {
-                this.getErrorElement().text("You already have a request with the same title.");
-            }
+            //if (response.status === 400) {
+            //    this.getErrorElement().text("There was a problem with the request. Please try something else.");
+            //}
+            //
+            //if (response.status === 403) {
+            //    this.getErrorElement().text("It doesn't look like your user has been saved correctly.");
+            //}
+            //
+            //if (response.status === 409) {
+            //    this.getErrorElement().text("You already have a request with the same title.");
+            //}
         };
 
     return AddView;

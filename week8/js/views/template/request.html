@@ -1,11 +1,16 @@
 <li class="list-group-item">
-    <span class="item-title">{{Title}}</span>
-    <label for="edit_{{Id}}" class="hidden">Edit Title</label>
-    <input type="text" id="edit_{{Id}}" class="action-edit-input item-edit"/>
-    <span class="pull-right text-muted">{{Date}}</span>
+    <span class="item-title item-label">{{Title}}</span>
+    <label for="edit_title_{{Id}}" class="hidden">Edit Title</label>
+    <input type="text" id="edit_title_{{Id}}" class="action-edit-input title-edit item-edit"/>
+    <span class="pull-right text-muted item-label item-date">{{Date}}</span>
+    <label for="edit_date_{{Id}}" class="hidden">Edit Date</label>
+    <input type="text" id="edit_date_{{Id}}" class="action-edit-input date-edit item-edit pull-right text-muted"/>
     <svg class="pull-right action-icon action-delete"><use xlink:href="../global/assets/images/spritemap.svg#remove"></use></svg>
-    {{#unless Answered}}
-        <svg class="pull-right action-icon action-answer"><use xlink:href="../global/assets/images/spritemap.svg#checkmark"></use></svg>
-    {{/unless}}
+    <svg class="pull-right action-icon action-answer{{#if Answered}} hover{{/if}}"><use xlink:href="../global/assets/images/spritemap.svg#checkmark"></use></svg>
     <svg class="pull-right action-icon action-edit"><use xlink:href="../global/assets/images/spritemap.svg#edit"></use></svg>
+    <div class="item-edit-details">
+        <span class="error-message"></span>
+        <button type="submit" class="btn btn-default btn-success pull-right button-update">Update</button>
+        <button type="submit" class="btn btn-default pull-right button-cancel">Cancel</button>
+    </div>
 </li>

@@ -21,6 +21,7 @@ $btn-success-border: darken($btn-success-bg, 5%);
 @import "bootstrap/utilities";
 @import "bootstrap/list-group";
 
+
 * {
   box-sizing: border-box;
 }
@@ -81,17 +82,55 @@ header {
       padding: 0.5em 0 0.5em 0.25em;
     }
   }
+
+  &-link {
+    &-group {
+      float: right;
+      padding: 1.5em 1em;
+
+      a {
+        display: inline-block;
+        vertical-align: bottom;
+        padding: 0 0.75em;
+      }
+    }
+  }
 }
 
 .week-number {
   color: $green;
 }
 
+.header-link-github {
+  &:hover {
+    .octocat-eyes {
+      transform-origin: 15px;
+      animation: blink 4s infinite;
+      animation-delay: .1s;
+    }
+  }
+}
+
+@keyframes blink {
+  0% {
+    transform: rotateX(0deg);
+  }
+
+  7% {
+    transform: rotateX(60deg);
+  }
+
+  14% {
+    transform: rotateX(0deg);
+  }
+
+  100% {
+    transform: rotateX(0deg);
+  }
+}
+
 .house {
   &-link {
-    float: right;
-    padding: 1.5em 1em;
-
     @media (max-width: 600px) {
       max-width: 30px;
       padding: 1em;
@@ -125,16 +164,46 @@ header {
 }
 
 // Content
-
 .list-group {
   margin: 0;
 
   &-item {
     transition: background-color .5s linear,
-                box-shadow .2s linear;
+                box-shadow .2s linear,
+                max-height .2s linear;
+
+    max-height: 45px;
+
+    &:hover {
+      .action-icon {
+        display: inline-block;
+      }
+    }
 
     &.new {
       background-color: $alert-success-bg;
+    }
+
+    &.answer {
+      background-color: $alert-success-bg;
+    }
+
+    &.delete {
+      background-color: $alert-danger-bg;
+    }
+
+    .status-text {
+      color: $alert-danger-text;
+      display: inline-block;
+      padding-left: 6px;
+
+      &.green {
+        color: $alert-success-text;
+      }
+    }
+
+    &.fade-out {
+      animation: fadeOut 1000ms linear;
     }
   }
 }
@@ -160,14 +229,16 @@ $fill: #ddd;
   &-answer {
     width: 23px;
 
-    &:hover {
+    &:hover,
+    &.hover {
       fill: $green;
     }
   }
 
   &-delete {
 
-    &:hover {
+    &:hover,
+    &.hover {
       fill: $alert-danger-text;
     }
   }
@@ -181,7 +252,9 @@ $fill: #ddd;
       fill: #eee;
     }
 
-    &:hover {
+    &:hover,
+    &.hover,
+    .edit-mode & {
       fill: darken(#fbed50, 17);
 
       .st0 {
@@ -199,11 +272,25 @@ $fill: #ddd;
   }
 }
 
+.button {
+  &-cancel {
+    margin-right: 0.5em;
+  }
+}
+
 .item {
   &-edit {
     display: none;
     border: none;
     width: 60%;
+
+    &-details {
+      @extend .item-edit;
+
+      clear: both;
+      width: auto;
+      margin-top: 14px;
+    }
 
     &:focus {
       outline: none;
@@ -211,24 +298,42 @@ $fill: #ddd;
   }
 }
 
+.date {
+  &-edit {
+    width: 156px;
+    text-align: right;
+  }
+}
+
 .edit-mode {
   box-shadow: 0 0 9px #777;
   z-index: 10;
+  overflow: hidden;
+  max-height: 120px;
+
+  .action {
+    &-delete,
+    &-answer {
+      display: none !important;
+    }
+
+    &-edit {
+      display: inline-block;
+    }
+  }
 
   .item {
-    &-title {
+    &-label {
       display: none;
     }
 
     &-edit {
       display: inline;
-    }
-  }
-}
 
-.list-group-item:hover {
-  .action-icon {
-    display: inline-block;
+      &-details {
+        display: block;
+      }
+    }
   }
 }
 
@@ -240,16 +345,40 @@ $fill: #ddd;
   }
 }
 
+.error {
+  &-message {
+    display: inline-block;
+    float: left;
+    color: $alert-danger-text;
+    border-radius: $border-radius-base;
+
+    &.active {
+      padding: 7px 10px;
+      background: $alert-danger-bg;
+      border: 1px solid $alert-danger-border;
+    }
+
+    &.fixed {
+      position: fixed;
+      top: 1em;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+}
+
 /* =============== Add Request ================ */
 .add-request {
   &-container {
     float: right;
+    text-align: right;
   }
 
   &-input {
     animation: fadeIn 0.3s linear;
 
     display: inline-block;
+    vertical-align: middle;
     width: 300px;
     font-size: 14px;
     border-radius: $border-radius-base 0 0 $border-radius-base;
@@ -299,39 +428,35 @@ $fill: #ddd;
 
 /* =============== END: Add Request ================ */
 
-// Superfluous:
 .bear {
   position: absolute;
   margin-top: -1.5em;
 
   img {
     position: relative;
-    perspective: 200px;
-    perspective-origin: 0 0;
-    transform: rotateX( 0deg );
-    animation: swing infinite 6s linear;
+    // Actually disabling the swinging motion as I felt it was distracting
+    //will-change: transform;
+    //transform: translateZ(0);
+    //transform-origin: top;
+    //animation: swing infinite 6s linear;
   }
 
 
 }
 
 @keyframes swing {
-  0% {
-    transform: rotateX(0deg);
-  }
-  25% {
-    transform: rotateX(-45deg);
-  }
-  50% {
-    transform: rotateX(0deg);
-  }
-  75% {
-    transform: rotateX(45deg);
-  }
-  100% {
-    transform: rotateX(0deg);
-  }
+  0% { transform: rotateX(0deg); }
+  23% { transform: rotateX(-29deg); }
+  25% { transform: rotateX(-30deg); }
+  27% { transform: rotateX(-29deg); }
 
+  50% { transform: rotateX(0deg); }
+
+  73% { transform: rotateX(39deg); }
+  75% { transform: rotateX(40deg); }
+  77% { transform: rotateX(39deg); }
+
+  100% { transform: rotateX(0deg); }
 }
 
 .cloud {
@@ -339,20 +464,16 @@ $fill: #ddd;
   left: 92%;
   top: 18%;
   z-index: -1;
-  transform: translateX(0);
+  transform: translateX(0) translateZ(0);
   opacity: 0.5;
 
 
-  //animation: cycle infinite 160s linear;
-
-  &-image {
-
-  }
+  animation: cycle infinite 160s linear;
 }
 
 @keyframes cycle {
   0% {
-    transform: translateX(0);
+    transform: translateX(0) translateZ(0);
     opacity: 0;
   }
 
@@ -369,7 +490,7 @@ $fill: #ddd;
   }
 
   100% {
-    transform: translateX(-1500px);
+    transform: translateX(-1500px) translateZ(0);
     opacity: 0;
   }
 }
@@ -386,6 +507,29 @@ $fill: #ddd;
   }
 }
 
+@keyframes fadeOut {
+  0% {
+    display: block;
+    opacity: 1;
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+
+  49% {
+    display: block;
+    transform: matrix(1, 0, 0, 0.01, 0, -20);
+    opacity: 0;
+  }
+
+  50% {
+    display: none;
+  }
+  100% {
+    display: none;
+    transform: matrix(1, 0, 0, 0.01, 0, -20);
+    opacity: 0;
+  }
+}
+
 // Bootstrap overrides {
 .alert {
   transition: all .2s linear;
@@ -393,4 +537,9 @@ $fill: #ddd;
 
 .nav-tabs > li > a {
   background-color: rgba(#fff, 0.5);
+  transition: background-color .2s linear;
+
+  &.success {
+    background-color: rgba($alert-success-bg, 1);
+  }
 }

@@ -17,18 +17,45 @@
  * @copyright Swift Otter Studios, 7/9/15
  */
 
-define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./template/empty.html"],
-    function($, PubSub, evt, RequestView, AddView, HandleBars, emptyTemplate) {
+define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', './Add', "HandleBars", "text!./template/empty.html"],
+    function($, PubSub, evt, errorMsg, RequestView, RequestModel, AddView, HandleBars, emptyTemplate) {
 
-    var ApplicationView = function(unansweredContainer, answeredContainer, RequestCollection) {
-        var base = this;
-        this.answeredContainer = answeredContainer;
-        this.unansweredContainer = unansweredContainer;
-        this.collection = RequestCollection;
-        this.lists = ['answered', 'unanswered'];
-        this.addView = new AddView();
+        var ApplicationView = function(unansweredContainer, answeredContainer, RequestCollection) {
+            this.answeredContainer = answeredContainer;
+            this.unansweredContainer = unansweredContainer;
+            this.collection = RequestCollection;
+            this.updateButtonText = "Update";
 
-        this.getListElement = function(answered) {
+            this.getParent = function($el) {
+                return $el.parents(".list-group-item");
+            };
+
+            this.setup = function() {
+                PubSub.subscribe(evt.REQUEST_ADD, this.addRequestToList.bind(this));
+                PubSub.subscribe(evt.REQUEST_NEW_ADD, this.addRequestToList.bind(this));
+                PubSub.subscribe(evt.REQUEST_UPDATE_INIT, this.initRequestUpdate.bind(this));
+                PubSub.subscribe(evt.REQUEST_UPDATE_CANCEL, this.cancelEdit.bind(this));
+                PubSub.subscribe(evt.REQUEST_UPDATE_PREPARE_COMPLETE, this.finishEdit.bind(this));
+                PubSub.subscribe(evt.REQUEST_UPDATE_COMPLETE, this.completeRequestUpdate.bind(this));
+                PubSub.subscribe(evt.REQUEST_DELETE_INIT, this.initRequestRemove.bind(this));
+                PubSub.subscribe(evt.REQUEST_DELETE_CLEANUP, this.addEmptyListMessage);
+                PubSub.subscribe(evt.REQUEST_DELETE_COMPLETE, this.removeRequestFromList.bind(this));
+                PubSub.subscribe(evt.REQUEST_ANSWERED_INIT, this.initToggleAnswered.bind(this));
+                PubSub.subscribe(evt.REQUEST_ANSWERED_COMPLETE, this.toggleAnsweredComplete.bind(this));
+                PubSub.subscribe(evt.REQUEST_NEW_ADD, this.clearEmptyListMessages.bind(this));
+                PubSub.subscribe(evt.LIST_ACTION_COMPLETE, this.addEmptyListMessage);
+                PubSub.subscribe(evt.INITIALIZE_SYSTEM, this.addEmptyListMessage.bind(this));
+                PubSub.subscribe(evt.ERROR_UPDATE, this.updateError.bind(this));
+                PubSub.subscribe(evt.ERROR, this.generalError.bind(this));
+            };
+
+            this.setup();
+        };
+
+        ApplicationView.prototype.lists = ['answered', 'unanswered'];
+        ApplicationView.prototype.addView = new AddView();
+
+        ApplicationView.prototype.getListElement = function(answered) {
             var answeredStr = answered ? "answered" : "unanswered",
                 $element = this[answeredStr + "Container"].find('.list-group');
 
@@ -40,7 +67,7 @@ define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./t
             return $element;
         };
 
-        this.addRequestToList = function(eventName, request) {
+        ApplicationView.prototype.addRequestToList = function(eventName, request) {
             var requestView = new RequestView(request),
                 $newRequest = requestView.getElement();
 
@@ -54,19 +81,24 @@ define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./t
 
             this.getListElement(request.Answered).append($newRequest);
         };
-        
-        this.addEmptyListMessage = function() {
-            var $group = $('.list-group');
+
+        ApplicationView.prototype.addEmptyListMessage = function() {
+            var $group = $('.list-group'),
+                template = HandleBars.compile(emptyTemplate);
+
+            if ($group.length < 1) {
+                this.answeredContainer.append(template);
+                this.unansweredContainer.append(template);
+            }
 
             $group.each(function() {
                 if ($(this).children('li').length === 0) {
-                    var template = HandleBars.compile(emptyTemplate);
                     $(this).before(template).remove();
                 }
             });
         };
 
-        this.removeMessageIfPopulated = function($container) {
+        ApplicationView.prototype.removeMessageIfPopulated = function($container) {
             var $emptyList = $container.children('.empty-list');
 
             if ($container instanceof $ && $emptyList.length > 0 && $container.children('.list-group').length > 0) {
@@ -74,88 +106,182 @@ define(["jquery", "PubSub", "evt", './Request', './Add', "HandleBars", "text!./t
             }
         };
 
-        this.clearEmptyListMessages = function() {
+        ApplicationView.prototype.clearEmptyListMessages = function() {
             this.removeMessageIfPopulated(this.unansweredContainer);
             this.removeMessageIfPopulated(this.answeredContainer);
         };
 
-        this.markAsAnswered = function(eventName, data) {
+        ApplicationView.prototype.initToggleAnswered = function(eventName, data) {
+            var $el = this.getParent(data.element),
+                $answeredText = $('<span class="status-text green">(updating)</span>');
+
+            $el.addClass("answer");
+
+            $el.find(".item-title").after($answeredText);
+        };
+
+        ApplicationView.prototype.toggleAnsweredComplete = function(eventName, data) {
             var $item = data.element;
-            $item.find('.action-answer').remove();
-            this.answeredContainer.find('.list-group').append($item);
+            $item.removeClass("answer").find('.status-text').remove();
+
+            if (data.model.Answered) {
+                // currently a page refresh is required to show the checkmark as green under #answered
+                // I do not know why this isn't having any effect
+                $item.find(".action-answer").addClass("hover");
+                this.answeredContainer.find('.list-group').append($item);
+                $('[href="#answered"]').addClass("success");
+            } else {
+                $item.find(".action-answer").removeClass("hover");
+                this.unansweredContainer.find('.list-group').append($item);
+                $('[href="#unanswered"]').addClass("success");
+            }
+
+            setTimeout(function() {
+                $(".nav .success").removeClass("success");
+            }, 1500);
+
             PubSub.publish(evt.LIST_ACTION_COMPLETE, $item);
         };
 
-        this.endEdit = function() {
-            $('.list-group-item').removeClass("edit-mode");
+        ApplicationView.prototype.cancelEdit = function(eventName, data) {
+            var $el = data.element,
+                model = data.model;
+
+            model.Title = model.OldTitle;
+            model.Date = model.OldDate;
+
+            $el.find(".item-title").text(model.OldTitle);
+            $el.find(".item-date").text(model.OldDate);
+
+            this.endEdit();
         };
 
-        this.finishEdit = function(model, $el) {
-            $el.siblings('.item-title').text($el.val());
+        ApplicationView.prototype.endEdit = function() {
+            $('.list-group-item')
+                .off('keydown')
+                .removeClass("edit-mode")
+                .find(".error-message")
+                .text('')
+                .removeClass("active");
+
+            $(".button-update")
+                .text(this.updateButtonText)
+                .prop("disabled", false);
+        };
+
+        ApplicationView.prototype.finishEdit = function(model, $el) {
+            if (model === evt.REQUEST_UPDATE_PREPARE_COMPLETE) {
+                model = $el.model;
+                $el = this.getParent($el.element);
+            }
+
+            var newTitle = $el.find(".title-edit").val(),
+                newDate = $el.find(".date-edit").val(),
+                $updateBtn = $el.find(".button-update");
+
+            $el.find('.item-title').text(newTitle);
+            $el.find('.item-date').text(newDate);
+            model.Title = newTitle;
+            model.Date = newDate;
+
+            $updateBtn.text('saving...').prop('disabled', true);
+
+            PubSub.publish(evt.REQUEST_UPDATE_SAVE, {
+                model: model,
+                element: $el
+            });
+        };
+
+        ApplicationView.prototype.initRequestUpdate = function(eventName, data) {
+            var $el = data.element,
+                model = data.model,
+                $listItem = this.getParent($el),
+                $title = $listItem.find('.title-edit'),
+                $date = $listItem.find('.date-edit');
+
             model.OldTitle = model.Title;
-            model.Title = $el.val();
-            base.endEdit();
-            PubSub.publish(evt.REQUEST_UPDATE_SAVE, model);
-            $el.off('keydown');
+            model.OldDate = model.Date;
+            $listItem.addClass("edit-mode");
+            $title.val(model.Title).focus();
+            $date.val(model.Date);
+
+            this.keyActions($listItem, model, $el);
         };
 
-        this.keyActions = function($input, model) {
+        ApplicationView.prototype.completeRequestUpdate = function(eventName, data) {
+            this.endEdit();
+            data.element.addClass("new");
+
+            setTimeout(function() {
+                data.element.removeClass("new");
+            }, 1500)
+        };
+
+        ApplicationView.prototype.updateError = function(eventName, data) {
+            var $el = data.element,
+                errorCode = data.response.status,
+                $errorElement = $el.find(".error-message").addClass("active");
+
+            $el.find(".title-edit").focus();
+            $el.find(".button-update").prop("disabled", false).text("Try again");
+            $errorElement.text(errorMsg[errorCode]);
+        };
+
+        ApplicationView.prototype.initRequestRemove = function(eventName, data) {
+            var $el = this.getParent(data.element),
+                $deleteText = $('<span class="status-text">(deleting)</span>');
+
+            $el.addClass("delete");
+
+            $el.find(".item-title").after($deleteText);
+        };
+
+        ApplicationView.prototype.removeRequestFromList = function(eventName, data) {
+            var $el = data.element;
+
+            if ($el) {
+                var $parent = this.getParent($el);
+                $parent.addClass("fade-out");
+
+                setTimeout(function() {
+                    $parent.remove();
+                    PubSub.publish(evt.REQUEST_DELETE_CLEANUP, $el.parents('.list-group'));
+                    $el.remove(); // removes actual delete icon
+                }, 500);
+            }
+        };
+
+        ApplicationView.prototype.generalError = function(eventName, data) {
+            var text = errorMsg[data.data.status] || "I'm sorry, but there has been an error.",
+                $errorElement = $(".global.error-message");
+
+            $errorElement.addClass("active").text(text);
+
+            setTimeout(function() {
+                $errorElement.text('').removeClass("active");
+            }, 3000);
+        };
+
+        ApplicationView.prototype.buildInitialList = function() {
+            this.collection.buildInitialList();
+        };
+
+        ApplicationView.prototype.keyActions = function($input, model) {
+            var base = this;
+
             $input.keydown(function(e) {
                 if (e.which === 13) {
                     base.finishEdit(model, $input);
                 }
 
                 if (e.which === 27) {
-                    base.endEdit();
+                    PubSub.publish(evt.REQUEST_UPDATE_CANCEL, {
+                        model: model,
+                        element: $input
+                    });
                 }
             });
         };
-
-        this.initRequestUpdate = function(eventName, data) {
-            var $el = data.element,
-                model = data.model,
-                $listItem = $el.parents('.list-group-item'),
-                $input = $listItem.find('.item-edit');
-
-            $listItem.addClass("edit-mode");
-            $input.val(model.Title).focus();
-
-            this.keyActions($input, model, $el);
-        };
-
-        this.completeRequestUpdate = function(eventName, data) {
-            console.log("Request updated successfully!");
-            // will add more
-        };
-
-        this.removeRequestFromList = function(eventName, data) {
-            var $el = data.element;
-
-            if ($el) {
-                $el.parents('.list-group-item').remove();
-                PubSub.publish(evt.REQUEST_DELETE_CLEANUP, $el.parents('.list-group'));
-                $el.remove(); // removes actual delete icon
-            }
-        };
-
-        this.buildInitialList = function() {
-            this.collection.buildInitialList();
-        };
-
-        this.setup = function() {
-            PubSub.subscribe(evt.REQUEST_ADD, this.addRequestToList.bind(this));
-            PubSub.subscribe(evt.REQUEST_NEW_ADD, this.addRequestToList.bind(this));
-            PubSub.subscribe(evt.REQUEST_UPDATE_INIT, this.initRequestUpdate.bind(this));
-            PubSub.subscribe(evt.REQUEST_UPDATE_COMPLETE, this.completeRequestUpdate.bind(this));
-            PubSub.subscribe(evt.REQUEST_DELETE_CLEANUP, this.addEmptyListMessage);
-            PubSub.subscribe(evt.REQUEST_DELETE_COMPLETE, this.removeRequestFromList.bind(this));
-            PubSub.subscribe(evt.REQUEST_ANSWERED_COMPLETE, this.markAsAnswered.bind(this));
-            PubSub.subscribe(evt.LIST_ACTION_COMPLETE, this.addEmptyListMessage);
-            PubSub.subscribe(evt.REQUEST_NEW_ADD, this.clearEmptyListMessages.bind(this));
-        };
-
-        this.setup();
-    };
 
     return ApplicationView;
 });

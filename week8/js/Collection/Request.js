@@ -36,6 +36,7 @@ define([
                 loadRequestsCompleted(data, status, onComplete);
             }).fail(function(data, status) {
                     PubSub.publish(evt.ERROR, { data: data, status: status });
+                    PubSub.publish(evt.INITIALIZE_SYSTEM);
                 }
             );
         };
@@ -78,7 +79,7 @@ define([
 
             PubSub.subscribe(evt.REQUEST_NEW_INIT, this.requestNew.bind(this));
             PubSub.subscribe(evt.REQUEST_DELETE_INIT, this.requestDelete.bind(this));
-            PubSub.subscribe(evt.REQUEST_ANSWERED_INIT, this.requestAnswered.bind(this));
+            PubSub.subscribe(evt.REQUEST_ANSWERED_INIT, this.requestUpdate.bind(this));
             PubSub.subscribe(evt.REQUEST_UPDATE_SAVE, this.requestUpdate.bind(this));
         };
 
@@ -134,26 +135,43 @@ define([
         };
 
         RequestCollection.prototype.requestUpdate = function(event, request) {
-            $.ajax(baseUrl + "update/" + request.Id, {
+            var completedEvent = evt.REQUEST_UPDATE_COMPLETE;
+
+            if (event === evt.REQUEST_ANSWERED_INIT) {
+                request.model.Answered = request.model.Answered ? false : true;
+                request.element = request.element.parents('.list-group-item');
+                completedEvent = evt.REQUEST_ANSWERED_COMPLETE;
+            }
+
+            $.ajax(baseUrl + "update/" + request.model.Id, {
                 dataType: "json",
                 method: "PUT",
-                data: { "prayer_request": request }
+                data: { "prayer_request": request.model }
                 })
                 .done(function(data, status) {
-                    PubSub.publish(evt.REQUEST_UPDATE_COMPLETE, status);
+                    PubSub.publish(completedEvent, {
+                        status: status,
+                        element: request.element,
+                        model: request.model
+                    });
                 })
                 .fail(function(data, status) {
                     console.log(status);
-                    PubSub.publish(evt.ERROR, {data: data, model: request});
+                    PubSub.publish(evt.ERROR_UPDATE, {
+                        response: data,
+                        model: request,
+                        element: request.element
+                    });
                 }
             );
         };
 
+        // DEPRECATED:
         RequestCollection.prototype.requestAnswered = function(event, request) {
             $.ajax(baseUrl + "update/" + request.model.Id, {
                 dataType: "json",
                 method: "PUT",
-                data: {"prayer_request": {"Answered": true}}
+                data: {"prayer_request": {"Answered": request.model.Answered}}
             }).done(function(data, status) {
                 PubSub.publish(evt.REQUEST_ANSWERED_COMPLETE, {
                     status: status,

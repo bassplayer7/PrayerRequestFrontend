@@ -27,15 +27,23 @@ define(['jquery', 'PubSub', 'evt', 'HandleBars', 'text!./template/request.html']
                 compiledTemplate = $(template(this.model));
 
             compiledTemplate.find('.action-delete').click(function() {
-                base.removeListItem($(this));
+                base.publishEvent(evt.REQUEST_DELETE_INIT, $(this));
             });
 
             compiledTemplate.find('.action-answer').click(function() {
-                base.answerListItem($(this));
+                base.publishEvent(evt.REQUEST_ANSWERED_INIT, $(this));
             });
 
             compiledTemplate.find('.action-edit').click(function() {
-                base.updateListItem($(this));
+                base.publishEvent(evt.REQUEST_UPDATE_INIT, $(this));
+            });
+
+            compiledTemplate.find(".button-update").click(function() {
+                base.publishEvent(evt.REQUEST_UPDATE_PREPARE_COMPLETE, $(this));
+            });
+
+            compiledTemplate.find(".button-cancel").click(function() {
+                base.publishEvent(evt.REQUEST_UPDATE_CANCEL, $(this));
             });
 
             this.getElement = function() {
@@ -43,24 +51,10 @@ define(['jquery', 'PubSub', 'evt', 'HandleBars', 'text!./template/request.html']
             };
         };
 
-        RequestView.prototype.removeListItem = function($el) {
-            PubSub.publish(evt.REQUEST_DELETE_INIT, {
+        RequestView.prototype.publishEvent = function(EVENT, $el) {
+            PubSub.publish(EVENT, {
                 model: this.model,
                 element: $el
-            });
-        };
-
-        RequestView.prototype.updateListItem = function($el) {
-            PubSub.publish(evt.REQUEST_UPDATE_INIT, {
-                model: this.model,
-                element: $el
-            });
-        };
-
-        RequestView.prototype.answerListItem = function($el) {
-            PubSub.publish(evt.REQUEST_ANSWERED_INIT, {
-                model: this.model,
-                element: $el.parents('.list-group-item')
             });
         };
 
