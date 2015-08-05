@@ -164,24 +164,6 @@ define([
             );
         };
 
-        // DEPRECATED:
-        RequestCollection.prototype.requestAnswered = function(event, request) {
-            $.ajax(baseUrl + "update/" + request.model.Id, {
-                dataType: "json",
-                method: "PUT",
-                data: {"prayer_request": {"Answered": request.model.Answered}}
-            }).done(function(data, status) {
-                PubSub.publish(evt.REQUEST_ANSWERED_COMPLETE, {
-                    status: status,
-                    element: request.element,
-                    model: request.model
-                });
-            }).fail(function(data) {
-                    PubSub.publish(evt.ERROR, {data: data, model: request});
-                }
-            );
-        };
-
         return RequestCollection;
     }
 );
