@@ -214,7 +214,7 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
 
             setTimeout(function() {
                 data.element.removeClass("new");
-            }, 1500)
+            }, 1500);
         };
 
         ApplicationView.prototype.updateError = function(eventName, data) {

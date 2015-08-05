@@ -20,28 +20,11 @@
 define(['jquery', 'HandleBars', 'PubSub', 'evt', 'errorMsg', 'text!./template/add.html', "BootstrapTab"],
     function($, HandleBars, PubSub, evt, errorMsg, AddTemplate) {
         var AddView = function() {
-            var base = this;
-
             this.setup = function() {
                 this.registerOpenInputClick();
+                PubSub.subscribe(evt.REQUEST_NEW_SHOW, this.showInput.bind(this));
                 PubSub.subscribe(evt.REQUEST_NEW_COMPLETE, this.completeAddRequest.bind(this));
                 PubSub.subscribe(evt.REQUEST_NEW_ERROR, this.displayError.bind(this));
-
-                // TODO: Move this to Application Controller or Application
-                $(document).keydown(function(e) {
-                    if (!$(":focus").is("input")) {
-                        if (e.which === 67) { // c for compose
-                            e.preventDefault();
-                            base.showInput.apply(base);
-                        } else if (e.which === 85) { // u for unanswered
-                            e.preventDefault();
-                            $('.nav-tabs a[href="#unanswered"]').tab('show');
-                        } else if (e.which === 65) {// a for answered
-                            e.preventDefault();
-                            $('.nav-tabs a[href="#answered"]').tab('show');
-                        }
-                    }
-                });
             };
 
             this.setup();
@@ -182,18 +165,6 @@ define(['jquery', 'HandleBars', 'PubSub', 'evt', 'errorMsg', 'text!./template/ad
         AddView.prototype.displayError = function(eventName, response) {
             this.enableAddRequest();
             this.getErrorElement().text(errorMsg[response.status]);
-
-            //if (response.status === 400) {
-            //    this.getErrorElement().text("There was a problem with the request. Please try something else.");
-            //}
-            //
-            //if (response.status === 403) {
-            //    this.getErrorElement().text("It doesn't look like your user has been saved correctly.");
-            //}
-            //
-            //if (response.status === 409) {
-            //    this.getErrorElement().text("You already have a request with the same title.");
-            //}
         };
 
     return AddView;

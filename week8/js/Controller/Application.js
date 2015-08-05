@@ -26,6 +26,21 @@ define(["jquery", "../Collection/Request", "../views/Application", "PubSub", "ev
         this.showList = function() {
             this.view.buildInitialList();
         };
+
+        $(document).keydown(function(e) {
+            if (!$(":focus").is("input")) {
+                if (e.which === 67) { // c for compose
+                    e.preventDefault();
+                    PubSub.publish(evt.REQUEST_NEW_SHOW);
+                } else if (e.which === 85) { // u for unanswered
+                    e.preventDefault();
+                    $('.nav-tabs a[href="#unanswered"]').tab('show');
+                } else if (e.which === 65) {// a for answered
+                    e.preventDefault();
+                    $('.nav-tabs a[href="#answered"]').tab('show');
+                }
+            }
+        });
     };
 
     return Application;

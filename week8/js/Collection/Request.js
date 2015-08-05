@@ -112,7 +112,6 @@ define([
                 dataType: "json",
                 method: "DELETE"
             }).done(function(data, status) {
-                console.log(status);
                 base.requestDeleteComplete(status, request.model, request.element);
             }).fail(function(data) {
                     PubSub.publish(evt.ERROR, data);
@@ -155,8 +154,7 @@ define([
                         model: request.model
                     });
                 })
-                .fail(function(data, status) {
-                    console.log(status);
+                .fail(function(data) {
                     PubSub.publish(evt.ERROR_UPDATE, {
                         response: data,
                         model: request,
@@ -178,8 +176,7 @@ define([
                     element: request.element,
                     model: request.model
                 });
-            }).fail(function(data, status) {
-                    console.log(status);
+            }).fail(function(data) {
                     PubSub.publish(evt.ERROR, {data: data, model: request});
                 }
             );

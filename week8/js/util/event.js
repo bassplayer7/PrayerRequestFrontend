@@ -19,13 +19,12 @@
 define({
     INITIALIZE_SYSTEM: "initialize.system",
 
+    REQUEST_NEW_SHOW: "request.new.show",
     // Request has been created by user:
     REQUEST_NEW_INIT: "request.new.init",
 
     // Request has been saved/processed and is ready to be added to list:
     REQUEST_NEW_ADD: "request.new.add",
-
-    //REQUEST_NEW_SAVE: "request.new.save",
 
     // Request has been added to list and all actions related to its creation have been finalized:
     REQUEST_NEW_COMPLETE: "request.new.complete",
