@@ -45,9 +45,7 @@ define({
     REQUEST_ANSWERED_INIT: "request.answered.init",
     REQUEST_ANSWERED_COMPLETE: "request.answered.complete",
 
-    REQUEST_UPDATE_INIT: "request.update.init",
-    REQUEST_UPDATE_CANCEL: "request.update.cancel",
-    REQUEST_UPDATE_PREPARE_COMPLETE: "request.update.prepare.complete",
+    REQUEST_UPDATE_END: "request.update.end", // closes the edit processes
     REQUEST_UPDATE_SAVE: "request.update.save",
     REQUEST_UPDATE_COMPLETE: "request.update.complete",
 

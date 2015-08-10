@@ -18,7 +18,7 @@ requirejs(['jquery', 'Model/Request', 'views/Request', 'views/Application', 'Con
     function($, RequestModel, RequestView, ApplicationView, Application) {
 
         "use strict";
-
+        $('.bear').click(function() {$(this).toggleClass('animate')});
         var application = new Application($('#unanswered-container'), $('#answered-container'));
 
         application.showList();

@@ -138,7 +138,6 @@ define([
 
             if (event === evt.REQUEST_ANSWERED_INIT) {
                 request.model.Answered = request.model.Answered ? false : true;
-                request.element = request.element.parents('.list-group-item');
                 completedEvent = evt.REQUEST_ANSWERED_COMPLETE;
             }
 

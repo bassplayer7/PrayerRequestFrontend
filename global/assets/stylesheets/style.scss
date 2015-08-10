@@ -434,14 +434,16 @@ $fill: #ddd;
 
   img {
     position: relative;
-    // Actually disabling the swinging motion as I felt it was distracting
-    //will-change: transform;
-    //transform: translateZ(0);
-    //transform-origin: top;
-    //animation: swing infinite 6s linear;
   }
 
-
+  &.animate {
+    img {
+      will-change: transform;
+      transform: translateZ(0);
+      transform-origin: top;
+      animation: swing infinite 6s linear;
+    }
+  }
 }
 
 @keyframes swing {

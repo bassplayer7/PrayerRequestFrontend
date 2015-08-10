@@ -33,14 +33,10 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
             this.setup = function() {
                 PubSub.subscribe(evt.REQUEST_ADD, this.addRequestToList.bind(this));
                 PubSub.subscribe(evt.REQUEST_NEW_ADD, this.addRequestToList.bind(this));
-                PubSub.subscribe(evt.REQUEST_UPDATE_INIT, this.initRequestUpdate.bind(this));
-                PubSub.subscribe(evt.REQUEST_UPDATE_CANCEL, this.cancelEdit.bind(this));
-                PubSub.subscribe(evt.REQUEST_UPDATE_PREPARE_COMPLETE, this.finishEdit.bind(this));
+                PubSub.subscribe(evt.REQUEST_UPDATE_END, this.endEdit.bind(this));
                 PubSub.subscribe(evt.REQUEST_UPDATE_COMPLETE, this.completeRequestUpdate.bind(this));
-                PubSub.subscribe(evt.REQUEST_DELETE_INIT, this.initRequestRemove.bind(this));
                 PubSub.subscribe(evt.REQUEST_DELETE_CLEANUP, this.addEmptyListMessage);
                 PubSub.subscribe(evt.REQUEST_DELETE_COMPLETE, this.removeRequestFromList.bind(this));
-                PubSub.subscribe(evt.REQUEST_ANSWERED_INIT, this.initToggleAnswered.bind(this));
                 PubSub.subscribe(evt.REQUEST_ANSWERED_COMPLETE, this.toggleAnsweredComplete.bind(this));
                 PubSub.subscribe(evt.REQUEST_NEW_ADD, this.clearEmptyListMessages.bind(this));
                 PubSub.subscribe(evt.LIST_ACTION_COMPLETE, this.addEmptyListMessage);
@@ -111,15 +107,6 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
             this.removeMessageIfPopulated(this.answeredContainer);
         };
 
-        ApplicationView.prototype.initToggleAnswered = function(eventName, data) {
-            var $el = this.getParent(data.element),
-                $answeredText = $('<span class="status-text green">(updating)</span>');
-
-            $el.addClass("answer");
-
-            $el.find(".item-title").after($answeredText);
-        };
-
         ApplicationView.prototype.toggleAnsweredComplete = function(eventName, data) {
             var $item = data.element;
             $item.removeClass("answer").find('.status-text').remove();
@@ -143,19 +130,6 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
             PubSub.publish(evt.LIST_ACTION_COMPLETE, $item);
         };
 
-        ApplicationView.prototype.cancelEdit = function(eventName, data) {
-            var $el = data.element,
-                model = data.model;
-
-            model.Title = model.OldTitle;
-            model.Date = model.OldDate;
-
-            $el.find(".item-title").text(model.OldTitle);
-            $el.find(".item-date").text(model.OldDate);
-
-            this.endEdit();
-        };
-
         ApplicationView.prototype.endEdit = function() {
             $('.list-group-item')
                 .off('keydown')
@@ -167,45 +141,6 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
             $(".button-update")
                 .text(this.updateButtonText)
                 .prop("disabled", false);
-        };
-
-        ApplicationView.prototype.finishEdit = function(model, $el) {
-            if (model === evt.REQUEST_UPDATE_PREPARE_COMPLETE) {
-                model = $el.model;
-                $el = this.getParent($el.element);
-            }
-
-            var newTitle = $el.find(".title-edit").val(),
-                newDate = $el.find(".date-edit").val(),
-                $updateBtn = $el.find(".button-update");
-
-            $el.find('.item-title').text(newTitle);
-            $el.find('.item-date').text(newDate);
-            model.Title = newTitle;
-            model.Date = newDate;
-
-            $updateBtn.text('saving...').prop('disabled', true);
-
-            PubSub.publish(evt.REQUEST_UPDATE_SAVE, {
-                model: model,
-                element: $el
-            });
-        };
-
-        ApplicationView.prototype.initRequestUpdate = function(eventName, data) {
-            var $el = data.element,
-                model = data.model,
-                $listItem = this.getParent($el),
-                $title = $listItem.find('.title-edit'),
-                $date = $listItem.find('.date-edit');
-
-            model.OldTitle = model.Title;
-            model.OldDate = model.Date;
-            $listItem.addClass("edit-mode");
-            $title.val(model.Title).focus();
-            $date.val(model.Date);
-
-            this.keyActions($listItem, model, $el);
         };
 
         ApplicationView.prototype.completeRequestUpdate = function(eventName, data) {
@@ -225,15 +160,6 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
             $el.find(".title-edit").focus();
             $el.find(".button-update").prop("disabled", false).text("Try again");
             $errorElement.text(errorMsg[errorCode]);
-        };
-
-        ApplicationView.prototype.initRequestRemove = function(eventName, data) {
-            var $el = this.getParent(data.element),
-                $deleteText = $('<span class="status-text">(deleting)</span>');
-
-            $el.addClass("delete");
-
-            $el.find(".item-title").after($deleteText);
         };
 
         ApplicationView.prototype.removeRequestFromList = function(eventName, data) {
@@ -264,23 +190,6 @@ define(["jquery", "PubSub", "evt", 'errorMsg', './Request', '../Model/Request', 
 
         ApplicationView.prototype.buildInitialList = function() {
             this.collection.buildInitialList();
-        };
-
-        ApplicationView.prototype.keyActions = function($input, model) {
-            var base = this;
-
-            $input.keydown(function(e) {
-                if (e.which === 13) {
-                    base.finishEdit(model, $input);
-                }
-
-                if (e.which === 27) {
-                    PubSub.publish(evt.REQUEST_UPDATE_CANCEL, {
-                        model: model,
-                        element: $input
-                    });
-                }
-            });
         };
 
     return ApplicationView;
